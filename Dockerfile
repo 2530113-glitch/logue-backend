@@ -1,4 +1,12 @@
-FROM openjdk:17-oracle
+# Paso 1: Compilar el proyecto con Gradle
+FROM gradle:8.5-jdk17 AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN ./gradlew build --no-daemon -x test
+
+# Paso 2: Buscar el archivo .jar y ejecutarlo
+FROM openjdk:17-jdk-slim
 EXPOSE 8080
-COPY build/libs/logue-backend-1.0-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+RUN mkdir /app
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/backend.jar
+ENTRYPOINT ["java", "-jar", "/app/backend.jar"]
