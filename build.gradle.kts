@@ -27,7 +27,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("MainKt")
+    mainClass.set("ServerKt")
 }
 
 java {

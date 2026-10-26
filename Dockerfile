@@ -1,7 +1,12 @@
 FROM eclipse-temurin:17-jdk-jammy
 
+WORKDIR /app
+
+COPY . .
+
+RUN chmod +x gradlew
+RUN ./gradlew clean installDist -x test
+
 EXPOSE 8080
 
-COPY build/libs/logue-backend-1.0-SNAPSHOT.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+CMD ["./build/install/logue-backend/bin/logue-backend"]

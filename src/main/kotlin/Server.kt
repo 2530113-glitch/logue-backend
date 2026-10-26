@@ -26,7 +26,11 @@ data class LoginResponse(
 )
 
 fun main() {
-    embeddedServer(Netty, port = 8080) {
+    embeddedServer(
+        Netty,
+        host = "0.0.0.0",
+        port = System.getenv("PORT")?.toIntOrNull() ?: 8080
+    ) {
         install(CORS) {
             anyHost()
             allowHeader(HttpHeaders.ContentType)
